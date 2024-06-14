@@ -1,3 +1,4 @@
+import type { Meta, StoryObj } from "@storybook/react";
 import { ScriptLog } from "../ScriptLog";
 import type { Script } from "../types";
 
@@ -39,9 +40,20 @@ const logs: Script[] = [
 	},
 ];
 
-export default {
-	title: "ScriptLog",
+const meta: Meta<typeof ScriptLog> = {
 	component: ScriptLog,
 };
+export default meta;
+type Story = StoryObj<typeof ScriptLog>;
 
-export const Default = () => <ScriptLog logs={logs} />;
+export const Default: Story = {
+	args: {
+		logs,
+	},
+};
+
+export const Long: Story = {
+	args: {
+		logs: [...logs, ...logs, ...logs, ...logs, ...logs],
+	},
+};

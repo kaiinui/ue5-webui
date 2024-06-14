@@ -1,6 +1,7 @@
 import type { Preview } from "@storybook/react";
 import "../src/tailwind.css";
 import "./main.css";
+import "@fontsource/noto-sans-jp";
 
 const preview: Preview = {
 	parameters: {

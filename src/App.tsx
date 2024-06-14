@@ -1,13 +1,102 @@
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
-import { twc } from "react-twc";
 import { TypeAnimation } from "react-type-animation";
 import { twMerge } from "tailwind-merge";
 import { OptionChooser } from "./OptionChooser";
 import { ScriptLog } from "./ScriptLog";
 import type { Script } from "./types";
+import "./animation.css";
+import { twx } from "./util";
+import "@fontsource/noto-sans-jp";
 
-const OpacityButton = twc.button`rounded-full px-4 py-1 text-white bg-black/30 text-sm`;
+const longScript: Script[] = [
+	{
+		idx: 0,
+		name: "P",
+		bg: "blue",
+		text: "結構長いログでも",
+		type: "text",
+	},
+	{
+		idx: 1,
+		name: "キャラクター",
+		bg: "yellow",
+		text: "こんな感じに",
+		type: "text",
+	},
+	{
+		idx: 2,
+		name: "P",
+		bg: "blue",
+		text: "スクロールさせたり",
+		type: "text",
+	},
+	{
+		idx: 3,
+		name: "キャラクター",
+		bg: "yellow",
+		text: "することが",
+		type: "blur",
+	},
+	{
+		idx: 4,
+		name: "キャラクター",
+		bg: "yellow",
+		text: "できるかもです",
+		type: "blur",
+	},
+	{
+		idx: 5,
+		name: "P",
+		bg: "blue",
+		text: "もっとスクロールしてください",
+		type: "text",
+	},
+	{
+		idx: 6,
+		name: "キャラクター",
+		bg: "yellow",
+		text: "がんばります！",
+		type: "text",
+	},
+	{
+		idx: 7,
+		name: "P",
+		bg: "blue",
+		text: "その意気です",
+		type: "text",
+	},
+	{
+		idx: 8,
+		name: "キャラクター",
+		bg: "yellow",
+		text: "結構疲れてきました",
+		type: "text",
+	},
+	{
+		idx: 9,
+		name: "P",
+		bg: "blue",
+		text: "まだまだですよ。",
+		type: "text",
+	},
+	{
+		idx: 10,
+		name: "キャラクター",
+		bg: "yellow",
+		text: "結構、スクロールできたんじゃないですか？",
+		type: "text",
+	},
+	{
+		idx: 11,
+		name: "P",
+		bg: "blue",
+		text: "がんばりましたね。",
+		type: "text",
+	},
+];
+
+const OpacityButton = twx.button`rounded-full px-4 py-1 text-white bg-black/25 text-sm`;
 
 const useTouchPropagation = (ref: React.RefObject<HTMLDivElement>) => {
 	const onClick = (e: React.MouseEvent) => {
@@ -46,18 +135,25 @@ const useTalkScript = () => {
 			idx: 3,
 			name: "ふじた",
 			bg: "yellow",
-			text: "(この人、信用できんの？)",
+			text: "(えっ)",
 			type: "blur",
 		},
 		{
 			idx: 4,
+			name: "ふじた",
+			bg: "yellow",
+			text: "(この人、信用できんの？)",
+			type: "blur",
+		},
+		{
+			idx: 5,
 			name: "P",
 			bg: "blue",
 			text: "私を信じてください。",
 			type: "text",
 		},
 		{
-			idx: 5,
+			idx: 6,
 			name: "ふじた",
 			bg: "yellow",
 			text: "そのお話、受けさせていただきますっ！",
@@ -88,8 +184,12 @@ const useTalkScript = () => {
 	return { currentScript, logScripts, next, back };
 };
 
-function App() {
-	const [mode, setMode] = useState<"normal" | "log" | "hidehud">("normal");
+type Mode = "normal" | "log" | "log2" | "hidehud";
+
+const App: React.FC<{
+	mode: Mode;
+}> = (props) => {
+	const [mode, setMode] = useState<Mode>(props.mode || "normal");
 	const containerRef = useRef<HTMLDivElement>(null);
 	const { onClick } = useTouchPropagation(containerRef);
 	const { currentScript, logScripts, next, back } = useTalkScript();
@@ -109,10 +209,14 @@ function App() {
 			{mode === "log" && (
 				<ScriptLog logs={logScripts} onClose={() => setMode("normal")} />
 			)}
+			{mode === "log2" && (
+				<ScriptLog logs={longScript} onClose={() => setMode("normal")} />
+			)}
 			{currentScript.type === "option" && (
 				<OptionChooser
 					options={[
-						{ label: "あなたをプロデュースさせてください", value: "yes" },
+						{ label: "あなたをプロデュースします", value: "yes" },
+						{ label: "うーん", value: "intermediate" },
 						{ label: "…なんでもありません", value: "no" },
 					]}
 					onChoose={() => next()}
@@ -132,11 +236,9 @@ function App() {
 			>
 				<motion.div
 					animate={{
-						y: 0,
 						opacity: 1,
 					}}
 					initial={{
-						y: -12,
 						opacity: 0,
 					}}
 					className="absolute space-y-0.5 px-3 py-1.5 top-8 w-[200px] bg-black/30 rounded-tr-full rounded-br-full text-white"
@@ -147,11 +249,9 @@ function App() {
 
 				<motion.section
 					animate={{
-						y: 0,
 						opacity: 1,
 					}}
 					initial={{
-						y: 12,
 						opacity: 0,
 					}}
 					className="m-4 mb-12 space-y-4"
@@ -179,6 +279,20 @@ function App() {
 										blur,
 									)}
 								/>
+								<motion.span
+									animate={{
+										opacity: 1,
+									}}
+									initial={{
+										opacity: 0,
+									}}
+									transition={{
+										duration: 0.4,
+									}}
+									className="absolute bottom-3 right-4"
+								>
+									<ArrowIcon color="#999" />
+								</motion.span>
 								<TypeAnimation
 									key={currentScript.idx}
 									sequence={[currentScript.text]}
@@ -190,14 +304,20 @@ function App() {
 						</button>
 					)}
 					<div className="flex justify-between">
-						<OpacityButton type="button" onClick={() => setMode("hidehud")}>
-							[ ]
+						<OpacityButton
+							type="button"
+							className="bg-transparent pr-0"
+							onClick={() => setMode("hidehud")}
+						>
+							<Expand />
 						</OpacityButton>
 						<OpacityButton type="button">SKIP</OpacityButton>
 						<OpacityButton type="button" onClick={() => setMode("log")}>
 							ログ
 						</OpacityButton>
-						<OpacityButton type="button">AUTO</OpacityButton>
+						<OpacityButton type="button" onClick={() => setMode("log2")}>
+							長いログ
+						</OpacityButton>
 						<OpacityButton type="button" onClick={back}>
 							戻る
 						</OpacityButton>
@@ -206,6 +326,75 @@ function App() {
 			</div>
 		</>
 	);
-}
+};
+
+const ArrowIcon: React.FC<{
+	color: string;
+}> = ({ color }) => (
+	<svg
+		className="anim-talk-arrow"
+		height="18"
+		width="18"
+		viewBox="0 0 18 18"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<title>arrow</title>
+		<g fill="#212121">
+			<path
+				d="M2.75 6.5L9 12.75L15.25 6.5"
+				fill="none"
+				stroke={color}
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+			/>
+		</g>
+	</svg>
+);
+
+const Expand = () => (
+	<svg
+		height="18"
+		width="18"
+		viewBox="0 0 18 18"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<title>expand</title>
+		<g fill="#fff">
+			<path
+				d="M11.25,2.75h2c1.105,0,2,.895,2,2v2"
+				fill="none"
+				stroke="#fff"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+			/>
+			<path
+				d="M6.75,15.25h-2c-1.105,0-2-.895-2-2v-2"
+				fill="none"
+				stroke="#fff"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+			/>
+			<path
+				d="M2.75,6.75v-2c0-1.105,.895-2,2-2h2"
+				fill="none"
+				stroke="#fff"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+			/>
+			<path
+				d="M15.25,11.25v2c0,1.105-.895,2-2,2h-2"
+				fill="none"
+				stroke="#fff"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+			/>
+		</g>
+	</svg>
+);
 
 export default App;

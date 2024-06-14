@@ -9,3 +9,20 @@ html {
 body, #root {
   min-height: 100%;
 }
+
+* {
+  -ms-user-select: none; /* IE 10+ */
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hidescroll {
+  scrollbar-width: none;
+}
+
+body {
+  font-family: "Noto Sans JP";
+  overflow: hidden;
+}
