@@ -331,6 +331,7 @@ const App: React.FC<{
 const ArrowIcon: React.FC<{
 	color: string;
 }> = ({ color }) => (
+	// biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
 	<svg
 		className="anim-talk-arrow"
 		height="18"
@@ -338,7 +339,6 @@ const ArrowIcon: React.FC<{
 		viewBox="0 0 18 18"
 		xmlns="http://www.w3.org/2000/svg"
 	>
-		<title>arrow</title>
 		<g fill="#212121">
 			<path
 				d="M2.75 6.5L9 12.75L15.25 6.5"
@@ -353,13 +353,13 @@ const ArrowIcon: React.FC<{
 );
 
 const Expand = () => (
+	// biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
 	<svg
 		height="18"
 		width="18"
 		viewBox="0 0 18 18"
 		xmlns="http://www.w3.org/2000/svg"
 	>
-		<title>expand</title>
 		<g fill="#fff">
 			<path
 				d="M11.25,2.75h2c1.105,0,2,.895,2,2v2"

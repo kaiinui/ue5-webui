@@ -31,6 +31,8 @@ export const ScriptLog: React.FC<{
 				style={{
 					maskImage:
 						"linear-gradient(to top, transparent, black 25%, black 98%, transparent 100%)",
+					WebkitMaskImage:
+						"linear-gradient(to top, transparent, black 25%, black 98%, transparent 100%)",
 				}}
 			>
 				{logs.map((script, index) => {
@@ -98,6 +100,7 @@ const LogMessage: React.FC<{
 };
 
 const CloseIcon = () => (
+	// biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
 	<svg
 		className="opacity-80"
 		height="14"
@@ -105,7 +108,6 @@ const CloseIcon = () => (
 		viewBox="0 0 18 18"
 		xmlns="http://www.w3.org/2000/svg"
 	>
-		<title>close</title>
 		<g fill="#212121">
 			<path
 				d="M14 4L4 14"

@@ -21,6 +21,9 @@ body, #root {
 .hidescroll {
   scrollbar-width: none;
 }
+.hidescroll::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
 
 body {
   font-family: "Noto Sans JP";
